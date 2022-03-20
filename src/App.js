@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from './assets/logo_rorg_yellow.svg';
 import './App.css';
 
 function App() {
@@ -7,16 +7,11 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Bienvenido a mi projecto ReactJs, espero aprender a utilizar este framework
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p>
+          Mi nombre es Rogelio Arzola y estaré acompañandolos en este desarrollo :)
+        </p>
       </header>
     </div>
   );

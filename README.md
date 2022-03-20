@@ -1,6 +1,7 @@
-# Getting Started with Create React App
+# Created with React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This Project is my first develope learning ReactJs.
+It consist on a digital service shop, where diferent services are corelated and required.
 
 ## Available Scripts
 
