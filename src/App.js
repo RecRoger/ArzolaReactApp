@@ -1,18 +1,18 @@
-import logo from './assets/logo_rorg_yellow.svg';
 import './App.css';
+import NavBar from './components/NavBar.js';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <div className="app-container">
+      <NavBar />
+      <div className="app-content">
         <p>
-          Bienvenido a mi projecto ReactJs, espero aprender a utilizar este framework
+          Bienvenido a mi projecto ReactJs, poco a poco irá creciendo.
         </p>
         <p>
           Mi nombre es Rogelio Arzola y estaré acompañandolos en este desarrollo :)
         </p>
-      </header>
+      </div>
     </div>
   );
 }

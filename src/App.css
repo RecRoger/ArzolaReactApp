@@ -1,21 +1,23 @@
-.App {
-  text-align: center;
+* {
+  font-family: 'Roboto', sans-serif;
 }
 
-.App-logo {
-  width: 400px;
-  pointer-events: none;
+.app-container {
+  /* height: 100vh; */
 }
 
+.app-logo {
+  width: 150px;
+}
 
-.App-header {
-  background-color: #141115;
-  min-height: 100vh;
+.app-header {
+  padding: 1.5rem 2rem;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: #F7F7F9;
+  justify-content: space-between;
 }
 
+.app-content {
+  padding: 1rem;
+
+}
