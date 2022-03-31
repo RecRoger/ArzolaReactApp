@@ -21,3 +21,13 @@
   padding: 1rem;
 
 }
+
+#cartButton {
+  margin: 1rem 1rem -3rem auto;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-menu {
+  padding: 1rem;
+}

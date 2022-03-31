@@ -1,17 +1,21 @@
 import './App.css';
-import NavBar from './components/NavBar.js';
+import NavBar from './components/NavBar';
+import React from "react";
+import ItemListContainer from './components/ItemListContainer'
+
 
 function App() {
+
+
   return (
     <div className="app-container">
       <NavBar />
       <div className="app-content">
+        <h2>Bienvenido</h2>
         <p>
-          Bienvenido a mi projecto ReactJs, poco a poco irá creciendo.
+          Aca podrás solicitar diferentes servicios digitales, tanto del area de diseño gráfico, como marqueting digital y desarrollo web.
         </p>
-        <p>
-          Mi nombre es Rogelio Arzola y estaré acompañandolos en este desarrollo :)
-        </p>
+        <ItemListContainer />
       </div>
     </div>
   );
