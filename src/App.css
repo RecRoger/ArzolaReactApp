@@ -31,3 +31,13 @@
 .dropdown-menu {
   padding: 1rem;
 }
+
+.item-quantity {
+  background: white !important;
+  text-align: center;
+}
+
+.count-steps {
+  font-size: small;
+  font-weight: thin;
+}
