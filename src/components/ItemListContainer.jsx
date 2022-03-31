@@ -1,4 +1,4 @@
-import ItemCount from './ItemCount.js'
+import ItemCount from './ItemCount.jsx'
 import Swal from 'sweetalert2'
 
 export default function ItemListContainer() {
