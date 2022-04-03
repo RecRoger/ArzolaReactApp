@@ -15,7 +15,7 @@ export default function Item({ item}) {
 
     return (
         <>
-            <div className="card px-3 py-4 d-flex">
+            <div className="card px-3 py-4 w-100">
                 <h5>
                     {item.name} { item.steps ? <span className="count-item.steps">x{item.steps}</span> : ''}
                 </h5>
