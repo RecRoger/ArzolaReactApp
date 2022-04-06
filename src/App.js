@@ -10,7 +10,7 @@ function App() {
       <div className="app-content">
         <h2>Bienvenido</h2>
         <p>
-          Aca podrás solicitar diferentes servicios digitales, tanto del area de diseño gráfico, como marqueting digital y desarrollo web.
+          En esta web podras visualizar y solicitar la compra de diferentes productos y servicios
         </p>
         <ItemListContainer />
       </div>

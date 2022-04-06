@@ -6,7 +6,7 @@ function CartWidget() {
                 <i className="bi bi-cart"></i>
             </button>
             <ul className="dropdown-menu" aria-labelledby="cartButton">
-                <li> No hay nada seleccionado</li>
+                <li> No hay productos seleccionado</li>
             </ul>
         </div>
     </>

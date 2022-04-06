@@ -16,8 +16,8 @@ function ItemCount({ item, onAdd }) {
             Swal.fire({
                 position: 'bottom-end',
                 icon: 'error',
-                title: 'Personal insuficiente',
-                text: `No hay personal disponible en estos momentos para tomar tantos trabajos de ${item.name}`, 
+                title: 'Stock insuficiente',
+                text: `Solo hay ${item.stock} ${item.name} en stock en estos momentos`, 
                 showConfirmButton: false,
                 timer: 5500,
                 toast: true
@@ -35,7 +35,7 @@ function ItemCount({ item, onAdd }) {
                 <button className="btn btn-outline-secondary" type="button" onClick={()=> increment()}>+</button>
             </div>
             <div className="d-grid gap-2">
-                <button className="btn btn-primary" type="button" onClick={()=> onAdd(item, count)}>Añadir al carrito</button>
+                <button className="btn btn-primary" type="button" onClick={()=> onAdd(item, count)}>Añadir a lista</button>
             </div>
 
           </div>

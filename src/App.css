@@ -41,3 +41,27 @@
   font-size: small;
   font-weight: thin;
 }
+
+.image-container {
+  width: 500px;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.total-price,
+.new-price {
+  font-weight: bold;
+}
+
+.total-price.discounted {
+  font-weight: 500 !important;
+  text-decoration: line-through;
+}
+
+.discount-rate {
+  font-size: .8rem;
+}
+
+.new-price {
+  color: green;
+}
