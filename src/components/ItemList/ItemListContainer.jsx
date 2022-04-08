@@ -38,23 +38,26 @@ export default function ItemListContainer() {
   
   return (
     <>
-      <h3>Nuestros Productos</h3>
+      <div className="app-content">
+        <h3>Nuestros Productos</h3>
 
-      { !loader ? 
-        <ItemList items={ items }/>
-        : <div className="text-center mt-5">
-            <div className="spinner-grow" role="status">
-              <span className="visually-hidden">Loading...</span>
+        { !loader ? 
+          <ItemList items={ items }/>
+          : <div className="text-center mt-5">
+              <div className="spinner-grow" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
             </div>
-          </div>
-      }
+        }
 
 
-      <button className='btn btn-outline-secondary btn-lg my-4' onClick={()=> showDetail()}>Ver Detalle Producto</button>
+        {/* <button className='btn btn-outline-secondary btn-lg my-4' onClick={()=> showDetail()}>Ver Detalle Producto</button>
 
-      {detailIndicator ? 
-        <ItemDetailContainer />
-      : ''}
+        {detailIndicator ? 
+          <ItemDetailContainer />
+        : ''} */}
+
+      </div>
     </>
   );
 }

@@ -9,7 +9,6 @@ export default function ItemDetail({ item }) {
     if(item.discount) {
       setDiscountPrice(item.price * (1 - (item.discount/100)))
     }
-    console.log(item.images)
   }, [item])
 
   return (

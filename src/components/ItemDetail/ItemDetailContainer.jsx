@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import ItemDetail from './ItemDetail.jsx';
 
 export const DetailData = {
@@ -22,6 +23,8 @@ export default function ItemDetailContainer() {
   
   let [item, setItem] = useState(null);
   let [loader, setLoader] = useState(true);
+
+  let { itemId } = useParams()
   
   const getItemData = new Promise((resolve, reject) => {
     setTimeout(()=>{
@@ -38,20 +41,23 @@ export default function ItemDetailContainer() {
     .finally(()=>{
       setLoader(false)
     });
-  }, [])
+  }, [itemId])
   
   return (
     <>
-      <h3 className='mt-3'>Detalle de producto</h3>
+      <div className="app-content">
+        <h3>Detalle de producto: {itemId}</h3>
 
-      { !loader ? 
-        <ItemDetail item={ item }/>
-        : <div className="text-center mt-5">
-            <div className="spinner-grow" role="status">
-              <span className="visually-hidden">Loading...</span>
+        { !loader ? 
+          <ItemDetail item={ item }/>
+          : <div className="text-center mt-5">
+              <div className="spinner-grow" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
             </div>
-          </div>
-      }
+        }
+
+      </div>
     </>
   );
 }
