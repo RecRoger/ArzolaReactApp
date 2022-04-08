@@ -1,23 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { DefaultItems } from '../../constatns.js';
 import ItemDetail from './ItemDetail.jsx';
 
-export const DetailData = {
-  name: 'Chocotorta',
-  description: 'Deliciosa torta creada con crema de chocolate, dulce de leche y galletas de vainilla',
-  images: [
-    'https://www.recetasderechupete.com/wp-content/uploads/2021/03/Chocotorta.jpg',
-    'https://www.rionegro.com.ar/wp-content/uploads/2021/06/choccc-1.jpg',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFUy5D6brjLH8Xy_V8YzwYplAH8g1twsYl5g&usqp=CAU',
-    'https://okdiario.com/img/2018/05/14/chocotorta-argentina-655x368.jpg',
-  ],
-  price: 1300,
-  discount: 10,
-  creationTime: 3,
-  stock: 22,
-  step: 1,
-  initial: 1
-}
+export const defaultImages = [
+    'https://picsum.photos/500/300?random=1',
+    'https://picsum.photos/500/300?random=2',
+    'https://picsum.photos/500/300?random=3',
+    'https://picsum.photos/500/300?random=4',
+  ]
 
 export default function ItemDetailContainer() {
   
@@ -27,8 +18,9 @@ export default function ItemDetailContainer() {
   let { itemId } = useParams()
   
   const getItemData = new Promise((resolve, reject) => {
+    const item = DefaultItems.find(item=> item.id === itemId)
     setTimeout(()=>{
-      resolve(DetailData)
+      resolve({...item, images: defaultImages})
     },2000)
   }, (err)=>{throw err})
 
@@ -46,7 +38,7 @@ export default function ItemDetailContainer() {
   return (
     <>
       <div className="app-content">
-        <h3>Detalle de producto: {itemId}</h3>
+        <h3>Detalle de producto</h3>
 
         { !loader ? 
           <ItemDetail item={ item }/>

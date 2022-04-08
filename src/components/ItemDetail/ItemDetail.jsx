@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import ItemCount from '../ItemCount';
+import Swal from "sweetalert2";
 
 
 export default function ItemDetail({ item }) {
@@ -11,11 +13,21 @@ export default function ItemDetail({ item }) {
     }
   }, [item])
 
+  const onAdd = (item, count) => {
+    Swal.fire({
+        position: 'bottom-end',
+        icon: 'success',
+        title: `${item.name}${count > 1 ? `(x${count})` : '' } añadido a la lista de compras`,
+        showConfirmButton: false,
+        timer: 4500,
+    })
+  }
+
   return (
     <> { item ? 
-      <div className="d-flex detail-container">
+      <div className="detail-container">
         <div className="image-container">
-          
+          ------------------------------ IMAGENES DE PRUEBA!! -----------------------------------
           <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
             <div className="carousel-indicators">
               {item.images.map((image, index )=> 
@@ -38,10 +50,10 @@ export default function ItemDetail({ item }) {
               <span className="visually-hidden">Next</span>
             </button>
           </div>
-          
+          ------------------------------ IMAGENES DE PRUEBA!! -----------------------------------
         </div>
 
-        <div className="px-5">
+        <div className="px-5 detail-info">
           <h4>{item.name}</h4>
           <p className="item-price">
             <span className={item.discount ? 'discounted total-price' : 'total-price'}>${item.price}</span>
@@ -60,6 +72,10 @@ export default function ItemDetail({ item }) {
           {item.steps > 1 ? 
             <p><b>Cantidad de compra:</b> {item.steps}</p> : ''
           }
+
+          <div className="mt-auto d-flex ms-auto">
+              <ItemCount item={item} onAdd={onAdd}></ItemCount>
+          </div>
         </div>
       </div>
       : ''

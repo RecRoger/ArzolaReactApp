@@ -1,18 +1,15 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { DefaultItems } from '../../constatns.js';
 import ItemList from './ItemList.jsx';
-import ItemDetailContainer from '../ItemDetail/ItemDetailContainer.jsx';
 
-export const DefaultItems = [
-  { id: 1, name: "Budin de vainilla", initial: 1, stock: 10, steps: 1 },
-  { id: 2, name: "Galletas", initial: 10, stock: 100, steps: 10 },
-  { id: 3, name: "Pie de limon", initial: 1, stock: 5, steps: 1 },
-]
 
 export default function ItemListContainer() {
   
   let [items, setItems] = useState([]);
   let [loader, setLoader] = useState(false);
-  let [detailIndicator, setDetailIndicator] = useState(false);
+
+  let { category } = useParams()
   
   const getItems = new Promise((resolve, reject) => {
     setTimeout(()=>{
@@ -20,26 +17,29 @@ export default function ItemListContainer() {
     },2000)
   }, (err)=>{throw err})
   
-  
+
   useEffect(()=> {
     setLoader(true)
     getItems.then((resp)=>{
-      setItems(resp)
+      if(category) {
+        setItems(resp.filter(item=> item.categories.includes(category)))
+      } else {
+        setItems(resp)
+      }
     })
     .finally(()=> {
       setLoader(false)
     });
-  }, [])
-
-
-  function showDetail() {
-    setDetailIndicator(!detailIndicator)
-  }
+  }, [category])
   
   return (
     <>
       <div className="app-content">
-        <h3>Nuestros Productos</h3>
+        <h3>
+          {category ? '' : 'Todos '}
+          Nuestros Productos
+          {category ? `: ${category}` : ''}
+        </h3>
 
         { !loader ? 
           <ItemList items={ items }/>
@@ -49,13 +49,6 @@ export default function ItemListContainer() {
               </div>
             </div>
         }
-
-
-        {/* <button className='btn btn-outline-secondary btn-lg my-4' onClick={()=> showDetail()}>Ver Detalle Producto</button>
-
-        {detailIndicator ? 
-          <ItemDetailContainer />
-        : ''} */}
 
       </div>
     </>

@@ -38,8 +38,23 @@
   font-weight: thin;
 }
 
+
+.detail-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.detail-info {
+  display: flex;
+  flex-direction: column;
+}
+
 .image-container {
   width: 500px;
+}
+
+.carousel {
   border-radius: 1rem;
   overflow: hidden;
 }
@@ -47,17 +62,15 @@
 .total-price,
 .new-price {
   font-weight: bold;
+  color: green;
 }
 
 .total-price.discounted {
+  color: grey !important;
   font-weight: 500 !important;
   text-decoration: line-through;
 }
 
 .discount-rate {
   font-size: .8rem;
-}
-
-.new-price {
-  color: green;
 }
