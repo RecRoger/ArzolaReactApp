@@ -1,7 +1,7 @@
 # Created with React App
 
 This Project is my first develope learning ReactJs.
-It consist on a digital service shop, where diferent services are corelated and required.
+It consist on a bakery shop, with inventory and catalog.
 
 ## Available Scripts
 
