@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import ItemCount from '../ItemCount';
-import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 
-export default function ItemDetail({ item }) {
+export default function ItemDetail({ item, onAdd }) {
 
   let [discountPrice, setDiscountPrice] = useState([]);
 
@@ -12,16 +12,6 @@ export default function ItemDetail({ item }) {
       setDiscountPrice(item.price * (1 - (item.discount/100)))
     }
   }, [item])
-
-  const onAdd = (item, count) => {
-    Swal.fire({
-        position: 'bottom-end',
-        icon: 'success',
-        title: `${item.name}${count > 1 ? `(x${count})` : '' } añadido a la lista de compras`,
-        showConfirmButton: false,
-        timer: 4500,
-    })
-  }
 
   return (
     <> { item ? 
@@ -54,7 +44,20 @@ export default function ItemDetail({ item }) {
         </div>
 
         <div className="px-5 detail-info">
-          <h4>{item.name}</h4>
+          <h4>{item.name} 
+          {
+            item.steps>1 ?
+            <span className='detail-steps'> (x{item.steps} unidades)</span> : ''
+          }
+          </h4> 
+          <p className="mb-3">
+              {item.categories.map((category, i) => 
+                <Link className="me-2" to={'/category/'+category}>
+                  <span key={i} className="badge rounded-pill bg-primary">{category}</span>
+                </Link>
+              )}
+          </p>
+
           <p className="item-price">
             <span className={item.discount ? 'discounted total-price' : 'total-price'}>${item.price}</span>
             {item.discount ? 

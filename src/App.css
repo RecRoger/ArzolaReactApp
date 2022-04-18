@@ -50,6 +50,11 @@
   flex-direction: column;
 }
 
+.detail-steps {
+  font-weight: normal;
+  font-size: 1.2rem;
+}
+
 .image-container {
   width: 500px;
 }
