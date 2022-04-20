@@ -5,7 +5,7 @@ export default function ItemList({ items }) {
 
   return (
     <>
-      <div className="row service-container mt-3">
+      <div className="row container mt-5 mx-auto">
         { items?.length ?
           items.map(item => 
               <div key={'item-'+item.id} className="col-3 d-flex">

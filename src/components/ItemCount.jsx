@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Swal from 'sweetalert2'
+import {CartContext} from '../Context/Context'
 
-
-function ItemCount({ item, onAdd }) {
-    const [count, setCount] = useState(item?.initial || item.item.steps || 1)
+function ItemCount({ item }) {
+    const { addToCart }  = useContext(CartContext);
+    const [count, setCount] = useState(item.stock == 0 ? 0 : item?.initial || item.item.steps || 1)
 
     function decrement() {
         if(count > 0)
         setCount((count - (item.steps || 1)))
     }
+
     function increment() {
         if(count + (item.steps || 1) <= item.stock ) {
             setCount(count + (item.steps || 1))
@@ -24,7 +26,11 @@ function ItemCount({ item, onAdd }) {
             })
         }
     }
-
+    
+    function addItemToCart(item) {    
+        addToCart(item, count)
+        setCount(item.stock === count ?  0 : item?.initial || item.item.steps || 1)
+    }
 
     return (
       <>
@@ -35,7 +41,7 @@ function ItemCount({ item, onAdd }) {
                 <button className="btn btn-outline-secondary" type="button" onClick={()=> increment()}>+</button>
             </div>
             <div className="d-grid gap-2">
-                <button className="btn btn-primary" type="button" onClick={()=> onAdd(item, count)}>Añadir a lista</button>
+                <button className="btn btn-primary" type="button" disabled={!count} onClick={()=> addItemToCart(item, count)}>Añadir a lista</button>
             </div>
 
           </div>

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext} from 'react';
 import { useParams } from 'react-router-dom';
 import { DefaultItems } from '../../constatns.js';
 import ItemDetail from './ItemDetail.jsx';
-import Swal from "sweetalert2";
+import { ProductsContext } from '../../Context/Context.jsx';
+
 
 export const defaultImages = [
     'https://picsum.photos/500/300?random=1',
@@ -11,24 +12,35 @@ export const defaultImages = [
     'https://picsum.photos/500/300?random=4',
   ]
 
-export default function ItemDetailContainer() {
   
+export default function ItemDetailContainer() {
+
+  const { items, setItems }  = useContext(ProductsContext);
+
   let [item, setItem] = useState(null);
   let [loader, setLoader] = useState(true);
-  let [shopCount, setShopCount] = useState(0);
 
   let { itemId } = useParams()
   
   const getItemData = new Promise((resolve, reject) => {
-    const item = DefaultItems.find(item=> item.id === itemId)
-    setTimeout(()=>{
+    
+    let item
+    if(items?.length) {
+      item = items.find(item=> item.id === itemId)
       resolve({...item, images: defaultImages})
-    },2000)
+    } else {
+      item = DefaultItems.find(item=> item.id === itemId)
+      setTimeout(()=>{
+        resolve({...item, images: defaultImages})
+      },2000)
+    }
+
   }, (err)=>{throw err})
 
 
   useEffect(()=> {
     setLoader(true)
+
     getItemData.then((resp)=>{
       setItem(resp)
     })
@@ -37,29 +49,23 @@ export default function ItemDetailContainer() {
     });
   }, [itemId])
 
-  const onAdd = (item, count) => {
-    setShopCount(shopCount + count)
-    Swal.fire({
-        position: 'bottom-end',
-        icon: 'success',
-        title: `${item.name}${count > 1 ? `(x${count})` : '' } añadido a la lista de compras`,
-        showConfirmButton: false,
-        timer: 4500,
-    })
-  }
+  useEffect(()=> {
+    if(items?.length && item) {
+      const currentStock = items?.find(i=> i.id === item.id).stock
+      setItem({...item , stock: currentStock})
+    }
+  }, [items])
+
+  
   
   return (
     <>
       <div className="app-content">
         <h3>Detalle de producto
-        {
-            shopCount ?
-            <span className='detail-steps'> ({shopCount} unidades en lista de compras)</span> : ''
-        }
         </h3>
 
         { !loader ? 
-          <ItemDetail item={ item } onAdd={ onAdd } />
+          <ItemDetail item={ item } />
           : <div className="text-center mt-5">
               <div className="spinner-grow" role="status">
                 <span className="visually-hidden">Loading...</span>

@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext} from 'react';
 import ItemCount from '../ItemCount';
 import { Link } from "react-router-dom";
+import { CartContext } from '../../Context/Context';
 
+export default function ItemDetail({ item }) {
 
-export default function ItemDetail({ item, onAdd }) {
-
+  const { isInCart }  = useContext(CartContext);
   let [discountPrice, setDiscountPrice] = useState([]);
 
   useEffect(()=> {
@@ -49,11 +50,16 @@ export default function ItemDetail({ item, onAdd }) {
             item.steps>1 ?
             <span className='detail-steps'> (x{item.steps} unidades)</span> : ''
           }
+          { isInCart(item.id) ?
+            <span className="ms-2 badge rounded-pill bg-info">
+                <i className="bi bi-cart"></i> x{ isInCart(item.id) }
+            </span> : ''
+          }
           </h4> 
           <p className="mb-3">
               {item.categories.map((category, i) => 
-                <Link className="me-2" to={'/category/'+category}>
-                  <span key={i} className="badge rounded-pill bg-primary">{category}</span>
+                <Link key={i} className="me-2" to={'/category/'+category}>
+                  <span className="badge rounded-pill bg-primary">{category}</span>
                 </Link>
               )}
           </p>
@@ -77,7 +83,7 @@ export default function ItemDetail({ item, onAdd }) {
           }
 
           <div className="mt-auto d-flex ms-auto">
-              <ItemCount item={item} onAdd={onAdd}></ItemCount>
+              <ItemCount item={item}></ItemCount>
           </div>
         </div>
       </div>

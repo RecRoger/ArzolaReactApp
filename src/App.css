@@ -33,6 +33,29 @@
   text-align: center;
 }
 
+.no-stock {
+  height: 0;
+  overflow: visible;
+}
+
+.no-stock--label {
+  font-weight: bold;
+  text-align: center;
+  border-radius: 0.5rem;
+  padding: 5px 20px;
+  color: white;
+  width: 80%;
+  margin: auto;
+  transform: rotate(-25grad);
+}
+
+.item-cart-count {
+  /* text-align: end; */
+  position: absolute;
+  top: -1rem;
+  right: -1rem;
+}
+
 .count-steps {
   font-size: small;
   font-weight: thin;
