@@ -15,7 +15,7 @@ export const defaultImages = [
   
 export default function ItemDetailContainer() {
 
-  const { items, setItems }  = useContext(ProductsContext);
+  const { items }  = useContext(ProductsContext);
 
   let [item, setItem] = useState(null);
   let [loader, setLoader] = useState(true);

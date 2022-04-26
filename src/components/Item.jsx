@@ -33,6 +33,11 @@ const { isInCart }  = useContext(CartContext);
                             <span className="badge rounded-pill bg-primary">{category}</span>
                         </Link>
                     )}
+                    {   item.discount &&
+                        <span className="badge rounded-pill bg-danger">
+                            <b>%</b> Descuento
+                        </span> 
+                    }
                 </p>
                 <Link to={'/detail/' + item.id} className="mt-auto text-end">
                     <button className="btn btn-link">Ver detalle</button>

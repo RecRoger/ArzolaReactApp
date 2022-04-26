@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { CartContext } from '../Context/Context';
+import { Link } from "react-router-dom";
+import { CartContext } from '../../Context/Context';
 
 function CartWidget() {
 
@@ -34,6 +35,11 @@ function CartWidget() {
                         </li>
                       )}
                       <li className="d-flex w-100"> <button className="btn btn-link m-auto" onClick={()=> clearCart()}> Vaciar lista </button> </li>
+                      <li className="d-flex w-100"> 
+                        <Link className="m-auto" to={'/cart'}>
+                          <button className="btn btn-primary">Proceder Pago</button>
+                        </Link>
+                      </li>
                     </>
                     
                   } 

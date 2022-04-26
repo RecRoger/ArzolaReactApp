@@ -7,6 +7,7 @@ export default function ItemDetail({ item }) {
 
   const { isInCart }  = useContext(CartContext);
   let [discountPrice, setDiscountPrice] = useState([]);
+  
 
   useEffect(()=> {
     if(item.discount) {
@@ -16,7 +17,8 @@ export default function ItemDetail({ item }) {
 
   return (
     <> { item ? 
-      <div className="detail-container">
+      <>
+      <div className="detail-container container">
         <div className="image-container">
           ------------------------------ IMAGENES DE PRUEBA!! -----------------------------------
           <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
@@ -44,16 +46,11 @@ export default function ItemDetail({ item }) {
           ------------------------------ IMAGENES DE PRUEBA!! -----------------------------------
         </div>
 
-        <div className="px-5 detail-info">
+        <div className="ps-4 detail-info">
           <h4>{item.name} 
           {
             item.steps>1 ?
             <span className='detail-steps'> (x{item.steps} unidades)</span> : ''
-          }
-          { isInCart(item.id) ?
-            <span className="ms-2 badge rounded-pill bg-info">
-                <i className="bi bi-cart"></i> x{ isInCart(item.id) }
-            </span> : ''
           }
           </h4> 
           <p className="mb-3">
@@ -64,7 +61,7 @@ export default function ItemDetail({ item }) {
               )}
           </p>
 
-          <p className="item-price">
+          <p className="item-price h3">
             <span className={item.discount ? 'discounted total-price' : 'total-price'}>${item.price}</span>
             {item.discount ? 
               <>
@@ -73,6 +70,11 @@ export default function ItemDetail({ item }) {
                 <span className="new-price">${discountPrice}</span>
               </>
               : ''
+            }
+            { isInCart(item.id) ?
+              <span className="ms-2 badge rounded-pill bg-success">
+                  <i className="bi bi-cart"></i> x{ isInCart(item.id) }
+              </span> : ''
             }
           </p>
           <p>{item.description}</p>
@@ -86,16 +88,19 @@ export default function ItemDetail({ item }) {
               <ItemCount item={item}></ItemCount>
           </div>
         </div>
-      </div>
+
+        </div>
+        {!!isInCart(item.id) && 
+        
+        <div className="container mt-5 d-flex">
+          <Link className='ms-auto' to={'/cart'}>
+            <button className='btn btn-primary btn-lg px-5'>Proceder con la compra</button> 
+          </Link>
+        </div>
+        }
+      </>
       : ''
     }
     </>
   );
 }
-
-
-// images: [],
-// creationTime: 3,
-// stock: 22,
-// step: 1,
-// initial: 1

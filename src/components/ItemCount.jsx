@@ -4,7 +4,7 @@ import {CartContext} from '../Context/Context'
 
 function ItemCount({ item }) {
     const { addToCart }  = useContext(CartContext);
-    const [count, setCount] = useState(item.stock == 0 ? 0 : item?.initial || item.item.steps || 1)
+    const [count, setCount] = useState(item.stock === 0 ? 0 : item?.initial || item.item.steps || 1)
 
     function decrement() {
         if(count > 0)

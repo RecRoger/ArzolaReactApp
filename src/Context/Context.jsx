@@ -20,6 +20,7 @@ export default function ContextProvider({ children }) {
               name: addItem.name,
               price: addItem.price,
               discount: addItem.discount,
+              steps: addItem.steps,
           }, 
           count: 0
       }
@@ -94,6 +95,28 @@ export default function ContextProvider({ children }) {
         } 
     })
   }
+  
+  const payCart = (totals) => {
+    Swal.fire({
+        title: `¿Listo para proceder con la compra?`,
+        showCancelButton: true,
+        confirmButtonText: 'Comprar',
+        position: 'bottom-end',
+    }).then((result) => {
+        if (result.isConfirmed) {       
+            setCartList([])
+            Swal.fire({
+                position: 'bottom-end',
+                icon: 'success',
+                title: `Lista de compras pagada. <br/> Total $${totals.totalPrice}`,
+                showConfirmButton: false,
+                timer: 4500,
+            })
+        } 
+    })
+}
+
+  
 
   const isInCart = (itemId) => {
     return cartList.find(cart=> cart.item?.id === itemId)?.count || 0
@@ -103,7 +126,7 @@ export default function ContextProvider({ children }) {
   return (
     <>
         <ProductsContext.Provider value={{items, setItems, reloadIndicator, setReloadIndicator}} >
-            <CartContext.Provider value={{cartList, setCartList, addToCart, removeItem, clearCart, isInCart}} >
+            <CartContext.Provider value={{cartList, setCartList, addToCart, removeItem, clearCart, isInCart, payCart}} >
                 {children}
             </CartContext.Provider>
         </ProductsContext.Provider>

@@ -4,6 +4,20 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { initializeApp } from "firebase/app";
+const firebaseConfig = {
+  apiKey: "AIzaSyAu6bvZj6R-HTt06u_ILv_3nqkTYFSiwS0",
+  authDomain: "react-bakery-3a1e9.firebaseapp.com",
+  projectId: "react-bakery-3a1e9",
+  storageBucket: "react-bakery-3a1e9.appspot.com",
+  messagingSenderId: "889233902318",
+  appId: "1:889233902318:web:ebb6a83219e3760c8341ff",
+  measurementId: "G-S0LR8MNHKM"
+};
+
+// Initialize Firebase
+initializeApp(firebaseConfig);
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

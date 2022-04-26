@@ -1,12 +1,11 @@
 import logo from '../assets/logo_rorg_yellow.svg';
-import CartWidget from './CartWidget';
+// import CartWidget from './Cart/CartWidget';
 import { Link } from "react-router-dom";
 import { CATEGORIES } from '../constatns'
 
 function Navbar() {
 
   const categories = Object.values(CATEGORIES);
-
 
   return (
     <>
@@ -36,7 +35,7 @@ function Navbar() {
           </ul>
         </div>
     </header>
-    <CartWidget></CartWidget>
+    {/* <CartWidget></CartWidget> */}
     </>
   );
 }
