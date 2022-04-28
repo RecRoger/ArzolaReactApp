@@ -1,53 +1,35 @@
 import { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { DefaultItems } from '../../constatns.js';
 import { ProductsContext } from '../../Context/Context.jsx';
 import ItemList from './ItemList.jsx';
-
+import CartWidget from '../../components/Cart/CartWidget'
 
 export default function ItemListContainer() {
   
-  const { items, setItems, reloadIndicator, setReloadIndicator }  = useContext(ProductsContext);
+  const { getItems, reloadIndicator, setReloadIndicator }  = useContext(ProductsContext);
   
   let [shownItems, setShownItems] = useState(false);
   let [loader, setLoader] = useState(false);
 
-  let { category } = useParams()
-  
-  const getItems = new Promise((resolve, reject) => {
-    setTimeout(()=>{
-      const responseItems = JSON.parse(JSON.stringify(DefaultItems))
-      resolve(responseItems)
-    },2000)
-  }, (err)=>{throw err})
-  
+  let { category } = useParams()  
 
   useEffect(()=> {
-    if(reloadIndicator || !items?.length) {
-        setLoader(true)
-        getItems.then((resp)=>{
-          setItems(resp)
-          if(category) {
-            setShownItems(resp.filter(item=> item.categories.includes(category)))
-          } else {
-            setShownItems(resp)
-          }
-        })
-        .finally(()=> {
-          setReloadIndicator(false)
-          setLoader(false)
-        });
-    } else {
-      if(category) {
-          setShownItems(items.filter(item=> item.categories.includes(category)))
-        } else {
-          setShownItems(items)
-        }
-    }
+    setLoader(true)
+
+    getItems(category).then((resp)=>{
+      setShownItems(resp)
+    }, (reject)=> {
+      setShownItems([])
+    })
+    .finally(()=> {
+      setReloadIndicator(false)
+      setLoader(false)
+    });
   }, [category, reloadIndicator])
   
   return (
     <>
+      <CartWidget />
       <div className="app-content">
         <h3>
           {category ? '' : 'Todos '}
