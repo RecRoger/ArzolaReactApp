@@ -37,7 +37,6 @@ export default function ContextProvider({ children }) {
       throw e
     }
     
-    // return JSON.parse(JSON.stringify(DefaultItems))
 
   }
 
@@ -135,13 +134,15 @@ export default function ContextProvider({ children }) {
     const result = await Swal.fire({
       title: `¿Listo para proceder con la compra?`,
       showCancelButton: true,
-      confirmButtonText: 'Comprar',
+      confirmButtonText: 'Continuar',
       position: 'bottom-end',
     })
     
     if (result.isConfirmed) {       
       const {value: formValues}  = await  Swal.fire({
         title: 'Necesitamos tus datos',
+        position: 'bottom-end',
+        confirmButtonText: 'Confirmar orden',
         html:
           '<input id="name" class="swal2-input" placeholder="Nombre" type="text">' +
           '<input id="email" class="swal2-input" placeholder="Correo" type="email">' +

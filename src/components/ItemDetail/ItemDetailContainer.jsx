@@ -70,10 +70,10 @@ export default function ItemDetailContainer() {
   return (
     <>
       <CartWidget />
-      <div className="app-content">
-        <h3>Detalle de producto
-        </h3>
-
+      <div className="app-content">  
+        <div className='container app-title'>
+          <h3>Detalle de producto</h3>
+        </div>
         { !loader ? 
           <ItemDetail item={ item } />
           : <div className="text-center mt-5">

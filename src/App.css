@@ -13,13 +13,17 @@
   justify-content: space-between;
 }
 
+.app-title {
+  padding-right: 5rem;
+}
+
 .app-content {
   padding: 1rem;
 
 }
 
 #cartButton {
-  margin: 1rem 1rem -3rem auto;
+  /* margin: 1rem 2rem -3rem auto; */
   display: flex;
   align-items: center;
 }
@@ -63,13 +67,12 @@
 
 
 .detail-container {
-  display: flex;
+  /* display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: flex-start; */
 }
 
 .detail-info {
-  width: 65%;
   display: flex;
   flex-direction: column;
 }
@@ -80,7 +83,7 @@
 }
 
 .image-container {
-  width: 500px;
+  /* width: 500px; */
 }
 
 .carousel {

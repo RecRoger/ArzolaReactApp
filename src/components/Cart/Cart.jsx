@@ -40,7 +40,7 @@ export default function Cart() {
 
   const getPrice = (item) => {
     return (!item.discount) ?
-      <div className='cart-price h5'>
+      <div className='cart-price h5 mt-4'>
         ${item.unitPrice}
       </div> :
     <>
@@ -56,7 +56,9 @@ export default function Cart() {
     return (
       <>
         <div className="app-content d-flex flex-column">
-          <h3 className='mb-4'>Resumen de Compra</h3>
+          <div className='container'>
+            <h3 className='mb-4'>Resumen de Compra</h3>
+          </div>
           <div className='container mt-3'>
             <div className="alert alert-secondary text-center" role="alert">
               No hay elementos añadidos a la lista de compra!
@@ -75,68 +77,80 @@ export default function Cart() {
 
   return (
     <div className="app-content">
-      <h3>Resumen de Compra</h3>
-      <div className="container mt-5">
-        <>{ items.map(item => 
-            <div className='row mt-3' key={item.id}>
-              <div className='col-4 my-auto'>
-                <h5 className="d-flex">{item.name}</h5>
-              </div>
-              <div className='col mt-auto'>
-                <p className='text-end mb-2'>
-                  <b>Cantidad: </b>
-                  <br/>{item.count} elementos
-                </p>
-              </div>
-              <dir className="col-auto mt-auto mb-2">
-                <div>x</div>
-              </dir>
-              <div className='col mt-auto'>
-                <div className='text-center'>
-                  <b>
-                    Precio {item.steps > 1 ? 'x'+ item.steps : 'unidad'}: 
-                  </b>
-                  <br/>
-                  {getPrice(item)} 
+      <div className='container app-title'>
+        <h3>Resumen de Compra</h3>
+      </div>
+      <div className="container mt-3">
+        <>{ items.map((item, index) => 
+            <>
+              <div className='row mt-3' key={item.id}>
+                <div className='col-12 my-auto'>
+                  <h5 className="d-flex text-primary">{item.name}</h5>
+                </div>
+                <div className='col-4 col-sm-3 col-md-5'>
+                  <div className='mb-auto text-end'>
+                    <b>Cantidad:</b> 
+                  </div>
+                  <p className='text-end mb-2'>
+                    <br/>{item.count} elementos
+                  </p>
+                </div>
+                <dir className="col-1 d-none d-sm-block mt-auto mb-2">
+                  <div className='text-center fw-bold text-primary'>x</div>
+                </dir>
+
+                <div className='col-4 col-sm-3 col-md-2  d-flex flex-column'>
+                  <div className='mb-auto text-center'>
+                    <b>Precio {item.steps > 1 ? 'x'+ item.steps : 'unidad'}: </b>
+                  </div>
+                  <div className='text-center'>
+                    {getPrice(item)} 
+                  </div>
+                </div>
+                
+                <dir className="col-1 d-none d-sm-block mt-auto mb-2">
+                  <div  className='text-center fw-bold text-primary'> = </div>
+                </dir>
+                <div className='col-3 col-sm-3 col-md-2 d-flex flex-column'>
+                  {!index && 
+                    <div className='text-end text-sm-start h5'>
+                      <b>Total:</b> 
+                    </div>
+                  }
+                  <p className='text-end text-sm-start mt-auto h4'>
+                    ${item.totalPrice} 
+                  </p>
+                </div>
+                <div className='col-1 d-flex'>
+                  <span className="m-auto" onClick={()=> removeItem(item.id)}>
+                    <i className="bi bi-trash text-danger"></i>
+                  </span>
                 </div>
               </div>
-              <dir className="col-auto mt-auto mb-2">
-                <div> = </div>
-              </dir>
-              <div className='col mt-auto'>
-                <p className='text-start h4'>
-                  ${item.totalPrice} 
-                </p>
-              </div>
-              <div className='col-1 d-flex'>
-                <span className="m-auto" onClick={()=> removeItem(item.id)}>
-                  <i className="bi bi-trash text-danger"></i>
-                </span>
-              </div>
+            </>
+        )}</>
 
-            </div>
-        )}</>  
         <div className='row mt-3 border-top'>
-          <div className='ms-auto col-4'>
+          <div className='ms-auto col-11 col-sm-6 col-lg-4'>
             <div className='row mt-3'>
-              <b className="col">Subtotal:</b>
-              <div className='col'> ${totals.untaxedPrice}</div>
+              <b className="text-end text-sm-start col-6 col-md-8 col-lg-6">Subtotal:</b>
+              <div className='text-end text-sm-start col'> ${totals.untaxedPrice}</div>
             </div>
             <div className='row mt-3'>
-              <b className="col">impuesto (10%):</b>
-              <div className='col'> ${totals.tax}</div>
+              <b className="text-end text-sm-start col-6 col-md-8 col-lg-6">impuesto (10%):</b>
+              <div className='text-end text-sm-start col'> ${totals.tax}</div>
             </div>
             <div className='row mt-3 border-top pt-3'>
-              <b className="col my-auto">TOTAL:</b>
-              <div className='col h3'> ${totals.totalPrice}</div>
-              <div className='col-12 mt-3'>
-                <div className="row">
-                  <div className="col">
-                    <button className='btn btn-dark btn-lg w-100' onClick={()=> clearCart()}>Vaciar Lista</button>
-                  </div>
-                  <div className="col" onClick={()=> payCart(totals)}>
-                    <button className='btn btn-primary btn-lg w-100'>Pagar</button>
-                  </div>
+              <b className="text-end text-sm-start col-6 col-md-8 col-lg-6 my-auto">TOTAL:</b>
+              <div className='text-end text-sm-start col h3'> ${totals.totalPrice}</div>  
+            </div>
+            <div className='text-end text-sm-start col-12 mt-3'>
+              <div className="row">
+                <div className="col">
+                  <button className='btn btn-dark btn-lg w-100' onClick={()=> clearCart()}>Vaciar Lista</button>
+                </div>
+                <div className="col" onClick={()=> payCart(totals)}>
+                  <button className='btn btn-primary btn-lg w-100'>Pagar</button>
                 </div>
               </div>
             </div>

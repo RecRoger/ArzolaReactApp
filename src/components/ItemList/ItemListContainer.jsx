@@ -31,11 +31,13 @@ export default function ItemListContainer() {
     <>
       <CartWidget />
       <div className="app-content">
-        <h3>
-          {category ? '' : 'Todos '}
-          Nuestros Productos
-          {category ? `: ${category}` : ''}
-        </h3>
+        <div className='container app-title'>
+          <h3 >
+            {category ? '' : 'Todos '}
+            Nuestros Productos
+            {category ? `: ${category}` : ''}
+          </h3>
+        </div>
 
         { !loader ? 
           <ItemList items={ shownItems }/>

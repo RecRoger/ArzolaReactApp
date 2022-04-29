@@ -9,7 +9,7 @@ function CartWidget() {
   return (
     <>
         <div className="main-cart">
-            <button className="btn btn-secondary dropdown-toggle position-relative" type="button" id="cartButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <button className="btn btn-secondary dropdown-toggle position-relative mt-3 ms-auto me-4 me-md-5" type="button" id="cartButton" data-bs-toggle="dropdown" aria-expanded="false">
                 <i className="bi bi-cart"></i>
                 { cartList?.length ? 
                   <span className="position-absolute top-0 translate-middle badge rounded-pill bg-danger">
