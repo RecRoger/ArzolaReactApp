@@ -96,7 +96,7 @@ export default function ItemDetail({ item }) {
           { !!isInCart(item.id) && 
             <div className="container mt-5 d-flex">
               <Link className='ms-auto' to={'/cart'}>
-                <button className='btn btn-dark px-5'>Proceder con la compra</button> 
+                <button className='btn btn-dark px-5 me-3'>Proceder con la compra</button> 
               </Link>
             </div>
           }

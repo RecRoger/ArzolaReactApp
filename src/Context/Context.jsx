@@ -1,6 +1,6 @@
 import React, { useState, createContext } from "react";
 import Swal from 'sweetalert2'
-import {collection, getDocs, getFirestore, query, where} from 'firebase/firestore'
+import {addDoc, collection, getDocs, getFirestore, query, serverTimestamp, where} from 'firebase/firestore'
 
 export const CartContext = createContext();
 export const ProductsContext = createContext();
@@ -8,6 +8,7 @@ export const ProductsContext = createContext();
 export default function ContextProvider({ children }) {
 
   const [cartList, setCartList] = useState([])
+  const [totals, setTotals] = useState({untaxedPrice: 0, tax: 0, total:0})
   
   let [items, setItems] = useState([]);
   let [reloadIndicator, setReloadIndicator] = useState(false);
@@ -36,23 +37,21 @@ export default function ContextProvider({ children }) {
     } catch(e) {
       throw e
     }
-    
-
   }
 
 
   const addToCart = (addItem, addCount) => {    
       const updatedCart = [...cartList]
-      let cartItem = updatedCart.find(cart=> cart.item?.id === addItem.id);
+      let cartItem = updatedCart.find(cart=> cart?.id === addItem.id);
       if (!cartItem) {
       cartItem = {
-          item: {
-              id: addItem.id,
-              name: addItem.name,
-              price: addItem.price,
-              discount: addItem.discount,
-              steps: addItem.steps,
-          }, 
+          id: addItem.id,
+          name: addItem.name,
+          price: addItem.price,
+          discount: addItem.discount || null,
+          currentPrice: !addItem.discount ? 
+            addItem.price : (addItem.price * (1 - (addItem.discount/100))),
+          steps: addItem.steps,
           count: 0
       }
       updatedCart.push(cartItem)
@@ -61,7 +60,6 @@ export default function ContextProvider({ children }) {
       cartItem.count = shopCount
       setCartList(updatedCart)
       
-
       const updateItems = [...items]
       const item = updateItems.find(item=> item.id === addItem.id)
       item.stock = item?.stock - addCount
@@ -75,11 +73,12 @@ export default function ContextProvider({ children }) {
           timer: 4500,
       })
   }
+
   const removeItem = (itemId) => {
-    const cartItem = {...cartList.find(cart=> cart.item.id === itemId)};
+    const cartItem = {...cartList.find(cart=> cart.id === itemId)};
 
     Swal.fire({
-        title: `¿Seguro que deseas eliminar ${cartItem.item.name}${cartItem.count > 1 ? `(x${cartItem.count})` : '' } de la lista de compras?`,
+        title: `¿Seguro que deseas eliminar ${cartItem.name}${cartItem.count > 1 ? `(x${cartItem.count})` : '' } de la lista de compras?`,
         showCancelButton: true,
         confirmButtonText: 'Eliminar',
         position: 'bottom-end',
@@ -90,13 +89,13 @@ export default function ContextProvider({ children }) {
           item.stock = (item?.stock || 0) + Number(cartItem.count)
           setItems(updateItems)
           
-          const updatedCart = cartList.filter(cart=> cart.item.id !== itemId)
+          const updatedCart = cartList.filter(cart=> cart.id !== itemId)
           setCartList(updatedCart)
           
           Swal.fire({
               position: 'bottom-end',
               icon: 'success',
-              title: `${cartItem.item?.name}${cartItem.count > 1 ? `(x${cartItem.count})` : '' } eliminado de la lista de compras`,
+              title: `${cartItem.name}${cartItem.count > 1 ? `(x${cartItem.count})` : '' } eliminado de la lista de compras`,
               showConfirmButton: false,
               timer: 4500,
           })
@@ -126,11 +125,14 @@ export default function ContextProvider({ children }) {
         } 
     })
   }
-  
-  const payCart = async (totals) => {
+
+  const isInCart = (itemId) => {
+    return cartList.find(cart=> cart?.id === itemId)?.count || 0
+  }
 
 
-    
+
+  const procedePayment = async () => {
     const result = await Swal.fire({
       title: `¿Listo para proceder con la compra?`,
       showCancelButton: true,
@@ -138,52 +140,101 @@ export default function ContextProvider({ children }) {
       position: 'bottom-end',
     })
     
-    if (result.isConfirmed) {       
-      const {value: formValues}  = await  Swal.fire({
-        title: 'Necesitamos tus datos',
+    if (result.isConfirmed) {     
+
+      const { value: id, isConfirmed: confirmed }  = await  Swal.fire({
+        titleText: 'Necesitamos tus datos',
         position: 'bottom-end',
+        showCancelButton: true,
         confirmButtonText: 'Confirmar orden',
         html:
+          '<p>Para completar la orden de compra necesitamos algunos datos personales:</p>' +
           '<input id="name" class="swal2-input" placeholder="Nombre" type="text">' +
           '<input id="email" class="swal2-input" placeholder="Correo" type="email">' +
           '<input id="phone" class="swal2-input" placeholder="Celular" type="tel">',
         focusConfirm: false,
         preConfirm: () => {
-          return [
-            document.getElementById('name').value,
-            document.getElementById('email').value,
-            document.getElementById('phone').value
-          ]
-        }
+          const buyer = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value
+          }
+          if (buyer && valateUser(buyer)) {
+            return createOrder(buyer).then(orderId => orderId).catch((e) => {throw e})
+          } else {
+            Swal.showValidationMessage(`Datos invalidos`)
+          }
+        },
+        showLoaderOnConfirm: true,
+        allowOutsideClick: () => !Swal.isLoading()
       })
       
-      if (formValues) {
-        Swal.fire(JSON.stringify(formValues))
-        setCartList([])
-        
+      if(confirmed && id) {
+        Swal.fire({
+          position: 'bottom-end',
+          icon: 'success',
+          title: `Listo!!`,
+          html: `<p>Orden de compras realizada. <br><br> <b>Orden:</b> ${id} <br> ${cartList.length} elementos <br> <b>Total</b> $${totals.totalPrice}</p>`,
+          showConfirmButton: false,
+          timer: 4500,
+        }).then(()=> {
+          setCartList([])
+        })
+        return
+      } else if(confirmed && !id) {
         Swal.fire({
             position: 'bottom-end',
-            icon: 'success',
-            title: `Lista de compras pagada. <br/> Total $${totals.totalPrice}`,
+            icon: 'error',
+            title: `Ha ocurrido un error`,
+            text: `Lo sentimos, no hemos podido crear la orden`,
             showConfirmButton: false,
             timer: 4500,
         })
       }
+      
     } 
-
-}
-
-  
-
-  const isInCart = (itemId) => {
-    return cartList.find(cart=> cart.item?.id === itemId)?.count || 0
   }
 
+  const valateUser = (buyer) => {
+    const nameRegex = /^[a-zA-Z\s]*$/
+    const mailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+    const phoneRegex = /^[0-9]*$/
+    
+    if (buyer.name && nameRegex.test(buyer.name))    {
+      if (buyer.email && mailRegex.test(buyer.email))    {
+        if (buyer.phone && phoneRegex.test(buyer.phone))    {
+          return (true)
+        }
+      }
+    }
+    return (false)
+    
+  }
+
+  const createOrder = async (buyer) => {
+    const order = { 
+      buyer,
+      items: cartList,
+      totals,
+      date: serverTimestamp()
+    }
+    console.log('La orden', order)
+
+    const db = getFirestore();
+    const ordersCollection = collection(db, "orders")
+    try {
+      const {id} = await addDoc(ordersCollection, order)
+      return id
+    } catch(e) {
+      throw e
+    }
+
+  }
   
   return (
     <>
         <ProductsContext.Provider value={{items, getItems, setItems, reloadIndicator, setReloadIndicator}} >
-            <CartContext.Provider value={{cartList, setCartList, addToCart, removeItem, clearCart, isInCart, payCart}} >
+            <CartContext.Provider value={{cartList, setCartList, addToCart, removeItem, clearCart, isInCart, totals, setTotals, procedePayment}} >
                 {children}
             </CartContext.Provider>
         </ProductsContext.Provider>

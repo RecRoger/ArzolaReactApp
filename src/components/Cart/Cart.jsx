@@ -4,12 +4,10 @@ import { CartContext } from '../../Context/Context';
 
 export default function Cart() {
 
-  const { cartList, removeItem, clearCart, payCart }  = useContext(CartContext);
+  const { cartList, removeItem, clearCart, procedePayment, totals, setTotals}  = useContext(CartContext);
   const [items, setItems] = useState([])
-  const [totals, setTotals] = useState({untaxedPrice: 0, tax: 0, total:0})
 
   useEffect(()=> {
-
     if(!cartList?.length) {
       setItems([])
       setTotals({
@@ -18,11 +16,10 @@ export default function Cart() {
         totalPrice: 0,
       })
     } else {
+
       const parsedItems = cartList.map((cartItem)=> {
-        const unitPrice = !cartItem.item.discount ? 
-          cartItem.item.price : (cartItem.item.price * (1 - (cartItem.item.discount/100))) ;
-        const totalPrice = (cartItem.count/(cartItem.item.steps || 1)) * unitPrice
-        return {...cartItem.item, count: cartItem.count, unitPrice, totalPrice}
+        const totalPrice = (cartItem.count/(cartItem.steps || 1)) * cartItem.currentPrice
+        return {...cartItem, totalPrice}
       })
       setItems(parsedItems)
       const untaxedPrice = parsedItems.map((item)=> item.totalPrice).reduce((a, b) => a+b);
@@ -36,21 +33,7 @@ export default function Cart() {
       })
 
     }
-  }, [cartList])
-
-  const getPrice = (item) => {
-    return (!item.discount) ?
-      <div className='cart-price h5 mt-4'>
-        ${item.unitPrice}
-      </div> :
-    <>
-      <span className='cart-price original text-muted'>${item.price}</span>
-      <span className='cart-discount text-danger'> - {item.discount}%</span>
-      <div className='cart-price h5'>${item.unitPrice}</div>
-    </>
-  }
-
-
+  }, [cartList, setTotals])
 
   if(!cartList?.length){
     return (
@@ -65,7 +48,7 @@ export default function Cart() {
             </div>
             <div className='d-flex mt-4'>
               <Link to={'/'} className='ms-auto'>
-                <button className="btn btn-primary">Ver Productos</button>
+                <button className="btn btn-dark">Ver Productos</button>
               </Link>
 
             </div>
@@ -82,7 +65,6 @@ export default function Cart() {
       </div>
       <div className="container mt-3">
         <>{ items.map((item, index) => 
-            <>
               <div className='row mt-3' key={item.id}>
                 <div className='col-12 my-auto'>
                   <h5 className="d-flex text-primary">{item.name}</h5>
@@ -104,7 +86,9 @@ export default function Cart() {
                     <b>Precio {item.steps > 1 ? 'x'+ item.steps : 'unidad'}: </b>
                   </div>
                   <div className='text-center'>
-                    {getPrice(item)} 
+                    {item.discount && <span className='cart-price original text-muted'>${item.price}</span>}
+                    {item.discount && <span className='cart-discount text-danger'> - {item.discount}%</span>}
+                    <div className='cart-price h5'>${item.currentPrice}</div>
                   </div>
                 </div>
                 
@@ -127,7 +111,6 @@ export default function Cart() {
                   </span>
                 </div>
               </div>
-            </>
         )}</>
 
         <div className='row mt-3 border-top'>
@@ -147,9 +130,9 @@ export default function Cart() {
             <div className='text-end text-sm-start col-12 mt-3'>
               <div className="row">
                 <div className="col">
-                  <button className='btn btn-dark btn-lg w-100' onClick={()=> clearCart()}>Vaciar Lista</button>
+                  <button className='btn btn-link btn-lg w-100' onClick={()=> clearCart()}>Vaciar Lista</button>
                 </div>
-                <div className="col" onClick={()=> payCart(totals)}>
+                <div className="col" onClick={()=> procedePayment()}>
                   <button className='btn btn-primary btn-lg w-100'>Pagar</button>
                 </div>
               </div>

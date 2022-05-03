@@ -23,23 +23,21 @@ function CartWidget() {
                     : 
                     <>
                       {cartList.map(cartItem => 
-                        <li key={cartItem.item.id}>
-                          <h6 className="d-flex">{cartItem.item.name}
-                          <span className="ms-auto" onClick={()=> removeItem(cartItem.item.id)}>
+                        <li key={cartItem.id}>
+                          <h6 className="d-flex">{cartItem.name}
+                          <span className="ms-auto" onClick={()=> removeItem(cartItem.id)}>
                             <i className="bi bi-trash text-danger"></i>
                           </span>
                           </h6>
-                          <p className='text-end'>x{cartItem.count}
-                          
-                          </p>
+                          <p className=''>x{cartItem.count}</p>
                         </li>
                       )}
-                      <li className="d-flex w-100"> <button className="btn btn-link m-auto" onClick={()=> clearCart()}> Vaciar lista </button> </li>
-                      <li className="d-flex w-100"> 
+                      <li className="d-flex w-100 mt-4"> 
                         <Link className="m-auto" to={'/cart'}>
-                          <button className="btn btn-primary">Proceder Pago</button>
+                          <button className="btn btn-dark">Proceder Pago</button>
                         </Link>
                       </li>
+                      <li className="d-flex w-100"> <button className="btn btn-link m-auto" onClick={()=> clearCart()}> Vaciar lista </button> </li>
                     </>
                     
                   } 
