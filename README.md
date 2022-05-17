@@ -1,13 +1,13 @@
 # Created with React App
 
-This Project is my first develope learning ReactJs.
+This Project is my first develope learning ReactJs.\
 It consist on a bakery shop, with inventory and catalog.
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm start` to start local server
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
@@ -15,57 +15,38 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
+### `npm run build` to create build directory
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
+### `npm run deploy`  to deploy at Firebase server
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Runs the firebase command for deploy the build directory
+Open [https://react-bakery-3a1e9.web.app] (https://react-bakery-3a1e9.web.app) to view deployed app
 
-### `npm run eject`
+## External packages
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The project works with several libraries to make easier the devolpe and improve the user experience.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Bootstrap `5.1.3`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Bootstrap is a famous UI library, that counts with costumizable Sass styles and usefull UI components \
+Bootstrap is included via CDN as a link of the minified stylesheet and a script to bootstrap javascript added in the index.html
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+You can learn more about it on [https://getbootstrap.com/] (https://getbootstrap.com/)
 
-## Learn More
+### SweetAlert2 `11.4.8`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+SweetAlert2 is a beautiful, responsive and costumizable library for popups and confirmation message on javascript\
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+You can learn more about it on [https://sweetalert2.github.io/] (https://sweetalert2.github.io/)
 
-### Code Splitting
+### Firebase `9.6.11`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Firebase services are use to host de DataBase and de web server
 
-### Analyzing the Bundle Size
+You can learn more about it on [https://firebase.google.com/] (https://firebase.google.com/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

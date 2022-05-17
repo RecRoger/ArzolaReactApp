@@ -6,6 +6,8 @@ import ItemListContainer from './components/ItemList/ItemListContainer'
 import ItemDetailContainer from './components/ItemDetail/ItemDetailContainer.jsx';
 import ContextProvider from './Context/Context';
 import Cart from './components/Cart/Cart';
+import logo from './assets/logo_rorg_gray.svg';
+
 
 function App() {  
   
@@ -22,6 +24,12 @@ function App() {
               
           </Routes>
         
+          <footer className="container">
+            <img className="footer-logo" src={logo} alt="rogr"></img>
+            <div className="footer-signature">
+                App creada por <b>RecRoger</b> - 05/2022
+            </div>
+        </footer>
         </BrowserRouter>
     </ContextProvider>
     </>

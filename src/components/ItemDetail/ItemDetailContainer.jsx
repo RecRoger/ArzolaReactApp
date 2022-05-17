@@ -20,7 +20,6 @@ export default function ItemDetailContainer() {
 
   let [item, setItem] = useState(null);
   let [loader, setLoader] = useState(true);
-  let [storeCount, setStoreCount] = useState(0)
 
   let { itemId } = useParams()
   

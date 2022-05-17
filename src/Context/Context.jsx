@@ -1,6 +1,6 @@
 import React, { useState, createContext } from "react";
 import Swal from 'sweetalert2'
-import {addDoc, collection, getDocs, getFirestore, query, serverTimestamp, where} from 'firebase/firestore'
+import {doc, addDoc, collection, getDocs, getFirestore, query, serverTimestamp, where, writeBatch} from 'firebase/firestore'
 
 export const CartContext = createContext();
 export const ProductsContext = createContext();
@@ -39,7 +39,6 @@ export default function ContextProvider({ children }) {
     }
   }
 
-
   const addToCart = (addItem, addCount) => {    
       const updatedCart = [...cartList]
       let cartItem = updatedCart.find(cart=> cart?.id === addItem.id);
@@ -73,7 +72,6 @@ export default function ContextProvider({ children }) {
           timer: 4500,
       })
   }
-
   const removeItem = (itemId) => {
     const cartItem = {...cartList.find(cart=> cart.id === itemId)};
 
@@ -103,7 +101,6 @@ export default function ContextProvider({ children }) {
     })
     
   }
-
   const clearCart = () => {
     Swal.fire({
         title: `¿Seguro que deseas vasiar la lista de compras?`,
@@ -125,7 +122,6 @@ export default function ContextProvider({ children }) {
         } 
     })
   }
-
   const isInCart = (itemId) => {
     return cartList.find(cart=> cart?.id === itemId)?.count || 0
   }
@@ -153,14 +149,19 @@ export default function ContextProvider({ children }) {
           '<input id="email" class="swal2-input" placeholder="Correo" type="email">' +
           '<input id="phone" class="swal2-input" placeholder="Celular" type="tel">',
         focusConfirm: false,
-        preConfirm: () => {
+        preConfirm: async () => {
           const buyer = {
             name: document.getElementById('name').value,
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value
           }
-          if (buyer && valateUser(buyer)) {
-            return createOrder(buyer).then(orderId => orderId).catch((e) => {throw e})
+          if (buyer && validateUser(buyer)) {
+            const valid = await updateServerStock();
+            if (valid) {
+              return createOrder(buyer).then(orderId => orderId).catch((e) => {throw e})
+            } else {
+              return 'noStock'
+            }
           } else {
             Swal.showValidationMessage(`Datos invalidos`)
           }
@@ -172,9 +173,10 @@ export default function ContextProvider({ children }) {
       if(confirmed && id) {
         Swal.fire({
           position: 'bottom-end',
-          icon: 'success',
-          title: `Listo!!`,
-          html: `<p>Orden de compras realizada. <br><br> <b>Orden:</b> ${id} <br> ${cartList.length} elementos <br> <b>Total</b> $${totals.totalPrice}</p>`,
+          icon: id === 'noStock' ? 'error' :'success',
+          title: id === 'noStock' ? 'Problemas de Stock ' : `Listo!!`,
+          html: id === 'noStock' ? 'Lo sentimos! <br> Ha cambiado el stock durante la compra, por favor rehacer la orden nuevamente.'
+            : `<p>Orden de compras realizada. <br><br> <b>Orden:</b> ${id} <br> ${cartList.length} elementos <br> <b>Total</b> $${totals.totalPrice}</p>`,
           showConfirmButton: false,
           timer: 4500,
         }).then(()=> {
@@ -194,8 +196,7 @@ export default function ContextProvider({ children }) {
       
     } 
   }
-
-  const valateUser = (buyer) => {
+  const validateUser = (buyer) => {
     const nameRegex = /^[a-zA-Z\s]*$/
     const mailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
     const phoneRegex = /^[0-9]*$/
@@ -210,7 +211,6 @@ export default function ContextProvider({ children }) {
     return (false)
     
   }
-
   const createOrder = async (buyer) => {
     const order = { 
       buyer,
@@ -228,7 +228,31 @@ export default function ContextProvider({ children }) {
     } catch(e) {
       throw e
     }
+    
+  }
+  const updateServerStock = async () => {
+    await getItems();
+    const db = getFirestore();
+    const batch = writeBatch(db);
+    let stockError = false;
 
+    cartList.forEach((item) => {
+      debugger;
+      const dbItem = items.find(i=> i.id === item.id)
+      if (dbItem.stock - item.count) {
+        const itemDoc = doc(db, "products", item.id)
+        batch.update(itemDoc, {stock: dbItem.stock - item.count})
+      } else {
+        stockError = true;
+      }
+    });
+
+    if(!stockError) {
+      await batch.commit()
+      return true
+    } else{
+      return false
+    }
   }
   
   return (
