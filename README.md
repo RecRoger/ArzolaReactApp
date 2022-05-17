@@ -5,6 +5,8 @@ It consist on a bakery shop, with inventory and catalog.
 
 You can [click here](https://react-bakery-3a1e9.web.app) to check the app.
 
+![buyers-journy](https://user-images.githubusercontent.com/13226337/168918275-4292eb46-8a2b-4d2b-92be-8ff476b8d49f.gif)
+
 ## Available Scripts
 
 In the project directory, you can run:
