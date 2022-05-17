@@ -7,6 +7,7 @@ import ItemDetailContainer from './components/ItemDetail/ItemDetailContainer.jsx
 import ContextProvider from './Context/Context';
 import Cart from './components/Cart/Cart';
 import logo from './assets/logo_rorg_gray.svg';
+import OrdersContainer from './components/Orders/OrdersContainer';
 
 
 function App() {  
@@ -21,6 +22,7 @@ function App() {
             <Route exact path="/category/:category" element={<ItemListContainer />} />
             <Route exact path="/detail/:itemId" element={<ItemDetailContainer />} />
             <Route exact path="/cart" element={<Cart />}/>
+            <Route exact path="/orders" element={<OrdersContainer />}/>
               
           </Routes>
         

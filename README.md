@@ -24,7 +24,7 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 ### `npm run deploy`  to deploy at Firebase server
 
-Runs the firebase command for deploy the build directory
+Runs the firebase command for deploy the build directory \
 Open [https://react-bakery-3a1e9.web.app] (https://react-bakery-3a1e9.web.app) to view deployed app
 
 ## External packages
@@ -46,7 +46,7 @@ You can learn more about it on [https://sweetalert2.github.io/] (https://sweetal
 
 ### Firebase `9.6.11`
 
-Firebase services are use to host de DataBase and de web server
+Firebase services are use to host de DataBase and de web server \
 
 You can learn more about it on [https://firebase.google.com/] (https://firebase.google.com/)
 

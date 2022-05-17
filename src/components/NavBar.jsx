@@ -28,7 +28,7 @@ function Navbar() {
                 </li>
                 <li className="nav-item py-2 px-md-2">
                   <div className="dropdown">
-                    <button className="btn btn-secondary dropdown-toggle" type="button" id="categoryMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button className="btn btn-outline-light dropdown-toggle" type="button" id="categoryMenu" data-bs-toggle="dropdown" aria-expanded="false">
                       Categorias
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="categoryMenu">
@@ -43,6 +43,11 @@ function Navbar() {
 
                     </ul>
                   </div>
+                </li>
+                <li className="nav-item py-2 px-md-2">
+                  <Link to={'/orders'}>
+                    <button className="btn btn-secondary">Consultar orden</button>
+                  </Link>
                 </li>
               </ul>
             </div>

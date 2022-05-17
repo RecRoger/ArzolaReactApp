@@ -28,7 +28,7 @@ export default function ContextProvider({ children }) {
       const snapshot = await getDocs(productsCollection)
       if(snapshot?.docs?.length) {
         const newItems = snapshot.docs.map(item=> ({...item.data(), id: item.id}))
-        setItems(newItems)
+        await setItems(newItems)
         return newItems
       } else {
         return []
@@ -178,7 +178,6 @@ export default function ContextProvider({ children }) {
           html: id === 'noStock' ? 'Lo sentimos! <br> Ha cambiado el stock durante la compra, por favor rehacer la orden nuevamente.'
             : `<p>Orden de compras realizada. <br><br> <b>Orden:</b> ${id} <br> ${cartList.length} elementos <br> <b>Total</b> $${totals.totalPrice}</p>`,
           showConfirmButton: false,
-          timer: 4500,
         }).then(()=> {
           setCartList([])
         })
@@ -231,17 +230,21 @@ export default function ContextProvider({ children }) {
     
   }
   const updateServerStock = async () => {
-    await getItems();
     const db = getFirestore();
+    const productsCollection = collection(db, "products")
+    const snapshot = await getDocs(productsCollection)
+    const newItems = snapshot.docs.map(item=> ({...item.data(), id: item.id}))
+
     const batch = writeBatch(db);
     let stockError = false;
 
     cartList.forEach((item) => {
       debugger;
-      const dbItem = items.find(i=> i.id === item.id)
-      if (dbItem.stock - item.count) {
+      const dbItem = newItems.find(i=> i.id === item.id)
+      const newCount = dbItem.stock - item.count
+      if (newCount >= 0) {
         const itemDoc = doc(db, "products", item.id)
-        batch.update(itemDoc, {stock: dbItem.stock - item.count})
+        batch.update(itemDoc, {stock: newCount})
       } else {
         stockError = true;
       }

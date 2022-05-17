@@ -122,3 +122,11 @@ footer {
 .discount-rate {
   font-size: .8rem;
 }
+
+.order-form {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
